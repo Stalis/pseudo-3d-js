@@ -1,4 +1,4 @@
-class Color {
+export class Color {
     constructor(red, green, blue, alpha) {
         this.red = Color.boundColor(red);
         this.green = Color.boundColor(green);
@@ -22,5 +22,3 @@ class Color {
         }
     }
 }
-
-module.exports = Color;

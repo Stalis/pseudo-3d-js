@@ -1,4 +1,4 @@
-class CanvasRender {
+export class CanvasRender {
     constructor(ctx) {
         this.ctx = ctx;
     }
@@ -60,5 +60,3 @@ class CanvasRender {
             x, y, width ?? sprite.sWidth, height ?? sprite.sHeight);
     }
 }
-
-module.exports = CanvasRender;

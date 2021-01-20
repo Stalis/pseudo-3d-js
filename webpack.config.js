@@ -5,6 +5,31 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
     mode: 'development',
     entry: './src/index.js',
+    module: {
+        rules: [
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'images/[hash][ext][query]',
+                },
+            },
+            {
+                test: /\.tsx?$/i,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+                include: path.resolve(__dirname, 'src'),
+            },
+        ],
+    },
+    resolve: {
+        symlinks: false,
+        extensions: [ '.tsx', '.ts', '.js', '.png', '.svg', '.jpg', '.jpeg', '.gif'],
+    },
+    output: {
+        filename: 'main.js',
+        path: path.resolve(__dirname, 'dist'),
+    },
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
@@ -22,16 +47,4 @@ module.exports = {
             ]
         }),
     ],
-    output: {
-        filename: 'main.js',
-        path: path.resolve(__dirname, 'dist'),
-    },
-    module: {
-        rules: [
-            {
-                test: /\.(png|svg|jpg|jpeg|gif)$/i,
-                type: 'asset/resource',
-            },
-        ],
-    },
 };

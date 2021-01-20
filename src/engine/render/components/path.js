@@ -1,4 +1,4 @@
-class Path {
+export class Path {
     constructor() {
         this.points = [];
     }
@@ -7,5 +7,3 @@ class Path {
         this.points.push({ x: x, y: y });
     }
 }
-
-module.exports = Path;

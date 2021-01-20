@@ -1,4 +1,4 @@
-class Arc {
+export class Arc {
     constructor(radius, startAngle, endAngle, anticlockwise) {
         this.radius = radius;
         this.startAngle = startAngle;
@@ -6,5 +6,3 @@ class Arc {
         this.anticlockwise = anticlockwise;
     }
 }
-
-module.exports = Arc;
