@@ -1,6 +1,6 @@
 import { Game, GameOptions } from "./engine/engine";
 import { CanvasRender } from "./engine/render/render";
-import { Size, Color, Path, Sprite } from "./engine/render/components/components";
+import { Size, Color, Path, Sprite, Point } from "./engine/render/components/components";
 
 import Colors from "./colors";
 import { AnimatedSprite } from "./animatedSprite";
@@ -11,62 +11,76 @@ import candleA_01 from '../assets/spritesheets/RF_Catacombs_v1.0/candleA_01.png'
 import candleA_02 from '../assets/spritesheets/RF_Catacombs_v1.0/candleA_02.png';
 import candleA_03 from '../assets/spritesheets/RF_Catacombs_v1.0/candleA_03.png';
 import candleA_04 from '../assets/spritesheets/RF_Catacombs_v1.0/candleA_04.png';
+import { Rect } from "./engine/render/components/rect";
 
 
 export default class MyGame extends Game {
-    images: Record<string, HTMLImageElement> = {};
+    images: Record<string, ImageBitmap> = {};
     candleA: AnimatedSprite;
     candleB: AnimatedSprite;
 
-    onload() {
-        return Promise.all([
-            this.loadImage('mainlevbuild', mainlevbuild),
-            this.loadImage('candleA_01', candleA_01),
-            this.loadImage('candleA_02', candleA_02),
-            this.loadImage('candleA_03', candleA_03),
-            this.loadImage('candleA_04', candleA_04),
-        ]).then(_ => {
-            this.candleA = new AnimatedSprite([
-                new Sprite(this.images['candleA_01'], 0, 0, 7, 14),
-                new Sprite(this.images['candleA_02'], 0, 1, 7, 14),
-                new Sprite(this.images['candleA_03'], 0, 2, 7, 14),
-                new Sprite(this.images['candleA_04'], 0, 0, 7, 14),
-            ])
-        });
+    async onload() {
+        await Promise.all([
+            this.loadImageBitmap(mainlevbuild, 0, 0, 1024, 640)
+                .then(img => this.images['mainlevbuild'] = img),
+            this.loadImageBitmap(candleA_01, 0, -2, 7, 16)
+                .then(img => this.images['candleA_01'] = img),
+            this.loadImageBitmap(candleA_02, 0, -1, 7, 16)
+                .then(img => this.images['candleA_02'] = img),
+            this.loadImageBitmap(candleA_03, 0, 0, 7, 16)
+                .then(img => this.images['candleA_03'] = img),
+            this.loadImageBitmap(candleA_04, 0, -2, 7, 16)
+                .then(img => this.images['candleA_04'] = img),
+        ]);
+        this.candleA = new AnimatedSprite([
+            new Sprite(this.images['candleA_01']),
+            new Sprite(this.images['candleA_02']),
+            new Sprite(this.images['candleA_03']),
+            new Sprite(this.images['candleA_04']),
+        ]);
     }
 
     ondraw(render: CanvasRender, dt: number) {
-        render.drawClearRect(new Size(this.options.width, this.options.height), 0, 0);
-        let redRect = new Size(55, 50);
-        let blueRect = new Size(55, 50);
+        render.drawClearRect(0, 0, { width: this.options.width, height: this.options.height });
+        let redRect = { width: 55, height: 50 };
+        let blueRect = { width: 55, height: 50 };
     
         render.setFillColor(Colors.red);
-        render.drawFilledRect(redRect, 10, 10);
+        render.drawFilledRect(10, 10, redRect);
     
         render.setFillColor(new Color(0, 0, 200, 0.5));
-        render.drawFilledRect(blueRect, 30, 30)
+        render.drawFilledRect(30, 30, blueRect)
     
         let triangle = new Path();
         triangle.addPoint(25, 25);
         triangle.addPoint(25, -25);
-        render.drawFilledPath(triangle, 175, 50);
+        render.drawFilledPath(175, 50, triangle);
     
         var sprite = new Sprite(this.images['mainlevbuild'], 0, 0, 256, 256);
         render.drawSprite(sprite, 15, 15);
 
-        //render.drawClearRect(new Size(7, 16), 155, 155);
         render.drawSprite(this.candleA.next, 150, 155);
     }
 
-    loadImage(key: string, imagePath: string) {
+    loadImage(imagePath: string): Promise<HTMLImageElement> {
         return new Promise(resolve => {
-            var res = new Image();
-            res.src = imagePath;
-            this.images[key] = res;
-            
-            res.onload = () => {
-                resolve(res);
-            };
+            var img = new Image();
+            img.onload = () => {
+                resolve(img);
+            }
+            img.src = imagePath;
+        });
+    }
+
+    loadImageBitmap(imagePath: string, sx: number, sy: number, swidth: number, sheight: number): Promise<ImageBitmap> {
+        return new Promise(resolve => {
+            this.loadImage(imagePath)
+            .then(img => {
+                createImageBitmap(img, sx, sy, swidth, sheight)
+                    .then(bitmap => {
+                        resolve(bitmap);
+                    });
+            });
         });
     }
 }

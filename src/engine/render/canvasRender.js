@@ -19,19 +19,19 @@ export class CanvasRender {
         this.ctx.lineWidth = val;
     }
 
-    drawFilledRect(size, x, y) {
+    drawFilledRect(x, y, size) {
         this.ctx.fillRect(x, y, size.width, size.height);
     }
 
-    drawStrokeRect(size, x, y) {
+    drawStrokeRect(x, y, size) {
         this.ctx.strokeRect(x, y, size.width, size.height);
     }
 
-    drawClearRect(size, x, y) {
+    drawClearRect(x, y, size) {
         this.ctx.clearRect(x, y, size.width, size.height);
     }
 
-    drawFilledPath(path, x, y) {
+    drawFilledPath(x, y, path) {
         this.ctx.beginPath();
 
         this.ctx.moveTo(x, y);
@@ -42,7 +42,7 @@ export class CanvasRender {
         this.ctx.fill();
     }
 
-    drawStrokePath(path, x, y) {
+    drawStrokePath(x, y, path) {
         this.ctx.beginPath();
 
         this.ctx.moveTo(x, y);
@@ -56,7 +56,7 @@ export class CanvasRender {
 
     drawSprite(sprite, x, y, width, height) {
         this.ctx.drawImage(sprite.image, 
-            sprite.sx, sprite.sy, sprite.sWidth, sprite.sHeight,
+            sprite.sx ?? 0, sprite.sy ?? 0, sprite.sWidth ?? 0, sprite.sHeight ?? 0,
             x, y, width ?? sprite.sWidth, height ?? sprite.sHeight);
     }
 }
