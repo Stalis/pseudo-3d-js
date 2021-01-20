@@ -27,4 +27,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm run build --if-present
-    #- run: npm test
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.2
+      with:
+        node-version: 15.x
+        # Artifact name
+        #name: # optional, default is artifact
+        # A file, directory or wildcard pattern that describes what to upload
+        path: './dist/'
+        # The desired behavior if no files are found using the provided path.
