@@ -18,6 +18,7 @@ export default class MyGame extends Game {
     images: Record<string, ImageBitmap> = {};
     candleA: AnimatedSprite;
     candleB: AnimatedSprite;
+    playerPosition: Point = { x: 0, y: 0};
 
     async onload() {
         await Promise.all([
@@ -33,11 +34,25 @@ export default class MyGame extends Game {
                 .then(img => this.images['candleA_04'] = img),
         ]);
         this.candleA = new AnimatedSprite([
-            new Sprite(this.images['candleA_01'], 0, 0, 7, 16),
-            new Sprite(this.images['candleA_02'], 0, 0, 7, 16),
-            new Sprite(this.images['candleA_03'], 0, 0, 7, 16),
-            new Sprite(this.images['candleA_04'], 0, 0, 7, 16),
+            new Sprite(this.images['candleA_01'], { width: 7, height: 16 }),
+            new Sprite(this.images['candleA_02'], { width: 7, height: 16 }),
+            new Sprite(this.images['candleA_03'], { width: 7, height: 16 }),
+            new Sprite(this.images['candleA_04'], { width: 7, height: 16 }),
         ]);
+
+        document.addEventListener('keydown', (event) => {
+            const keyName = event.key;
+
+            if (keyName === 'w') {
+                this.playerPosition.y -= 5;
+            } else if (keyName === 's') {
+                this.playerPosition.y += 5;
+            } else if (keyName === 'a') {
+                this.playerPosition.x -= 5;
+            } else if (keyName === 'd') {
+                this.playerPosition.x += 5;
+            }
+        });
     }
 
     ondraw(render: CanvasRender, dt: number) {
@@ -56,10 +71,10 @@ export default class MyGame extends Game {
         triangle.addPoint(25, -25);
         render.drawFilledPath(175, 50, triangle);
     
-        var sprite = new Sprite(this.images['mainlevbuild'], 0, 0, 256, 256);
+        var sprite = new Sprite(this.images['mainlevbuild'], { width: 256, height: 256 });
         render.drawSprite(sprite, 15, 15);
 
-        render.drawSprite(this.candleA.next, 150, 155);
+        render.drawSprite(this.candleA.next, 150 + this.playerPosition.x, 155 + this.playerPosition.y);
     }
 
     loadImage(imagePath: string): Promise<HTMLImageElement> {

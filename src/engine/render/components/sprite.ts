@@ -1,15 +1,17 @@
+import { Rect } from "./rect";
+
 export class Sprite {
     image: CanvasImageSource;
-    sx?: number;
-    sy?: number;
+    sx: number = 0;
+    sy: number = 0;
     sWidth?: number;
     sHeight?: number;
 
-    constructor(image: CanvasImageSource, sx?: number, sy?: number, sWidth?: number, sHeight?: number) {
+    constructor(image: CanvasImageSource, rect: Rect) {
         this.image = image;
-        this.sx = sx;
-        this.sy = sy;
-        this.sWidth = sWidth;
-        this.sHeight = sHeight;
+        this.sx = rect.x ?? 0;
+        this.sy = rect.y ?? 0;
+        this.sWidth = rect.width;
+        this.sHeight = rect.height;
     }
 }

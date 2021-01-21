@@ -4,8 +4,6 @@
 
 import MyGame from './myGame';
 
-
-
 window.onload = _ => {
     const canvas = document.getElementById('screen');
 
