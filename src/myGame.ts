@@ -1,4 +1,4 @@
-import { Game, GameOptions } from "./engine/engine";
+import { Game, GameOptions, SpriteLoader } from "./engine/engine";
 import { CanvasRender } from "./engine/render/render";
 import { Size, Color, Path, Sprite, Point } from "./engine/render/components/components";
 
@@ -11,48 +11,17 @@ import candleA_01 from '../assets/spritesheets/RF_Catacombs_v1.0/candleA_01.png'
 import candleA_02 from '../assets/spritesheets/RF_Catacombs_v1.0/candleA_02.png';
 import candleA_03 from '../assets/spritesheets/RF_Catacombs_v1.0/candleA_03.png';
 import candleA_04 from '../assets/spritesheets/RF_Catacombs_v1.0/candleA_04.png';
-import { Rect } from "./engine/render/components/rect";
-
 
 export default class MyGame extends Game {
     images: Record<string, ImageBitmap> = {};
+    sprites: Record<string, Sprite[]> = {};
     candleA: AnimatedSprite;
     candleB: AnimatedSprite;
     playerPosition: Point = { x: 0, y: 0};
 
     async onload() {
-        await Promise.all([
-            this.loadImageBitmap(mainlevbuild, 0, 0, 1024, 640)
-                .then(img => this.images['mainlevbuild'] = img),
-            this.loadImageBitmap(candleA_01, 0, -2, 7, 16)
-                .then(img => this.images['candleA_01'] = img),
-            this.loadImageBitmap(candleA_02, 0, -1, 7, 16)
-                .then(img => this.images['candleA_02'] = img),
-            this.loadImageBitmap(candleA_03, 0, 0, 7, 16)
-                .then(img => this.images['candleA_03'] = img),
-            this.loadImageBitmap(candleA_04, 0, -2, 7, 16)
-                .then(img => this.images['candleA_04'] = img),
-        ]);
-        this.candleA = new AnimatedSprite([
-            new Sprite(this.images['candleA_01'], { width: 7, height: 16 }),
-            new Sprite(this.images['candleA_02'], { width: 7, height: 16 }),
-            new Sprite(this.images['candleA_03'], { width: 7, height: 16 }),
-            new Sprite(this.images['candleA_04'], { width: 7, height: 16 }),
-        ]);
-
-        document.addEventListener('keydown', (event) => {
-            const keyName = event.key;
-
-            if (keyName === 'w') {
-                this.playerPosition.y -= 5;
-            } else if (keyName === 's') {
-                this.playerPosition.y += 5;
-            } else if (keyName === 'a') {
-                this.playerPosition.x -= 5;
-            } else if (keyName === 'd') {
-                this.playerPosition.x += 5;
-            }
-        });
+        await this.loadSprites();
+        this.setupInput();
     }
 
     ondraw(render: CanvasRender, dt: number) {
@@ -71,31 +40,58 @@ export default class MyGame extends Game {
         triangle.addPoint(25, -25);
         render.drawFilledPath(175, 50, triangle);
     
-        var sprite = new Sprite(this.images['mainlevbuild'], { width: 256, height: 256 });
+        var sprite = this.sprites['mainlevbuild'][0];
         render.drawSprite(sprite, 15, 15);
 
         render.drawSprite(this.candleA.next, 150 + this.playerPosition.x, 155 + this.playerPosition.y);
     }
 
-    loadImage(imagePath: string): Promise<HTMLImageElement> {
-        return new Promise(resolve => {
-            var img = new Image();
-            img.onload = () => {
-                resolve(img);
-            }
-            img.src = imagePath;
-        });
+    async loadSprites() {
+        const spriteLoader = new SpriteLoader();
+        this.sprites = await spriteLoader.loadSprites({
+            'mainlevbuild': {
+                imagePath: mainlevbuild,
+                spriteAtlas: [ { x: 0, y: 0, width: 1024, height: 640 } ],
+            },
+            'candleA_01': {
+                imagePath: candleA_01,
+                spriteAtlas: [ { x: 0, y: -2, width: 7, height: 16 } ],
+            },
+            'candleA_02': {
+                imagePath: candleA_02,
+                spriteAtlas: [ { x: 0, y: -1, width: 7, height: 16 } ],
+            },
+            'candleA_03': {
+                imagePath: candleA_03,
+                spriteAtlas: [ { x: 0, y: 0, width: 7, height: 16 } ],
+            },
+            'candleA_04': {
+                imagePath: candleA_04,
+                spriteAtlas: [ { x: 0, y: -2, width: 7, height: 16 } ],
+            },
+        })
+
+        this.candleA = new AnimatedSprite([
+            this.sprites['candleA_01'][0],
+            this.sprites['candleA_02'][0],
+            this.sprites['candleA_03'][0],
+            this.sprites['candleA_04'][0],
+        ]);
     }
 
-    loadImageBitmap(imagePath: string, sx: number, sy: number, swidth: number, sheight: number): Promise<ImageBitmap> {
-        return new Promise(resolve => {
-            this.loadImage(imagePath)
-            .then(img => {
-                createImageBitmap(img, sx, sy, swidth, sheight)
-                    .then(bitmap => {
-                        resolve(bitmap);
-                    });
-            });
+    setupInput() {
+        document.addEventListener('keydown', (event) => {
+            const keyName = event.key;
+
+            if (keyName === 'w') {
+                this.playerPosition.y -= 5;
+            } else if (keyName === 's') {
+                this.playerPosition.y += 5;
+            } else if (keyName === 'a') {
+                this.playerPosition.x -= 5;
+            } else if (keyName === 'd') {
+                this.playerPosition.x += 5;
+            }
         });
     }
 }
