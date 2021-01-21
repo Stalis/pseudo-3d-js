@@ -21,7 +21,6 @@ export default class MyGame extends Game {
 
     async onload() {
         await this.loadSprites();
-        this.setupInput();
     }
 
     ondraw(render: CanvasRender, dt: number) {
@@ -79,19 +78,17 @@ export default class MyGame extends Game {
         ]);
     }
 
-    setupInput() {
-        document.addEventListener('keydown', (event) => {
-            const keyName = event.key;
+    onkeydown(event: KeyboardEvent) {
+        const keyName = event.key;
 
-            if (keyName === 'w') {
-                this.playerPosition.y -= 5;
-            } else if (keyName === 's') {
-                this.playerPosition.y += 5;
-            } else if (keyName === 'a') {
-                this.playerPosition.x -= 5;
-            } else if (keyName === 'd') {
-                this.playerPosition.x += 5;
-            }
-        });
+        if (keyName === 'w') {
+            this.playerPosition.y -= 5;
+        } else if (keyName === 's') {
+            this.playerPosition.y += 5;
+        } else if (keyName === 'a') {
+            this.playerPosition.x -= 5;
+        } else if (keyName === 'd') {
+            this.playerPosition.x += 5;
+        }
     }
 }

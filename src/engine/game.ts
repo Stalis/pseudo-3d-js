@@ -21,6 +21,8 @@ export class Game {
     }
 
     start() {
+        this._canvasContext.canvas.ownerDocument.onkeydown = this.onkeydown.bind(this);
+
         this.onload()
             .then(() => {
                 this._loopInterval = setInterval(() => {
@@ -59,6 +61,10 @@ export class Game {
     }
 
     onupdate(dt: number) {
+
+    }
+
+    onkeydown(event: KeyboardEvent) {
 
     }
 }
