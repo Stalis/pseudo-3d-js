@@ -1,16 +1,21 @@
 export class Color {
-    constructor(red, green, blue, alpha) {
+    red: number;
+    green: number;
+    blue: number;
+    alpha: number;
+
+    constructor(red: number, green: number, blue: number, alpha?: number) {
         this.red = Color.boundColor(red);
         this.green = Color.boundColor(green);
         this.blue = Color.boundColor(blue);
         this.alpha = Color.boundAlpha(alpha);
     }
 
-    static boundColor(value) {
+    static boundColor(value: number) {
         return !!value ? Math.max(Math.min(value, 255), 0) : 0;
     }
 
-    static boundAlpha(value) {
+    static boundAlpha(value: number) {
         return !!value ? Math.max(Math.min(value, 1), 0) : 0;
     }
 

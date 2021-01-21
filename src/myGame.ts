@@ -33,23 +33,23 @@ export default class MyGame extends Game {
                 .then(img => this.images['candleA_04'] = img),
         ]);
         this.candleA = new AnimatedSprite([
-            new Sprite(this.images['candleA_01']),
-            new Sprite(this.images['candleA_02']),
-            new Sprite(this.images['candleA_03']),
-            new Sprite(this.images['candleA_04']),
+            new Sprite(this.images['candleA_01'], 0, 0, 7, 16),
+            new Sprite(this.images['candleA_02'], 0, 0, 7, 16),
+            new Sprite(this.images['candleA_03'], 0, 0, 7, 16),
+            new Sprite(this.images['candleA_04'], 0, 0, 7, 16),
         ]);
     }
 
     ondraw(render: CanvasRender, dt: number) {
-        render.drawClearRect(0, 0, { width: this.options.width, height: this.options.height });
+        render.drawClearRect({ x: 0, y: 0, width: this.options.width, height: this.options.height });
         let redRect = { width: 55, height: 50 };
         let blueRect = { width: 55, height: 50 };
     
         render.setFillColor(Colors.red);
-        render.drawFilledRect(10, 10, redRect);
+        render.drawFilledRect({x: 10, y: 10}, redRect);
     
         render.setFillColor(new Color(0, 0, 200, 0.5));
-        render.drawFilledRect(30, 30, blueRect)
+        render.drawFilledRect({x:30, y:30}, blueRect)
     
         let triangle = new Path();
         triangle.addPoint(25, 25);
