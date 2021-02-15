@@ -1,9 +1,4 @@
-import { Color } from "./components/color";
-import { Path } from "./components/path";
-import { Point } from "./components/point";
-import { Rect } from "./components/rect";
-import { Size } from "./components/size";
-import { Sprite } from "./components/sprite";
+import { Color, Path, Point, Rect, Size, Sprite } from "./components";
 
 export class CanvasRender {
     ctx: CanvasRenderingContext2D;
@@ -64,7 +59,7 @@ export class CanvasRender {
         this.ctx.fill();
     }
 
-    drawStrokePath(x: number | Point, y: number | Path, path: Path) {
+    drawStrokePath(x: number | Point, y: number | Path, path?: Path) {
         let startX = 0, startY = 0;
         if (typeof x === 'object') {
             startX = x.x;

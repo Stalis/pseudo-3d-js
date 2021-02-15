@@ -1,5 +1,4 @@
-import { Rect } from "./render/components/rect";
-import { Sprite } from "./render/components/sprite";
+import { Rect, Sprite } from "./render/components";
 
 export interface SpriteLoaderQuery {
     imagePath: string;

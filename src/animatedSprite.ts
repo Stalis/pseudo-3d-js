@@ -1,4 +1,4 @@
-import { Sprite } from "./engine/render/components/sprite";
+import { Sprite } from "./engine/render/components";
 
 export class AnimatedSprite {
     private _sprites: Array<Sprite>;

@@ -1,9 +1,18 @@
-import { CanvasRender } from "./render/render";
+import { CanvasRender } from "./render";
 
 export interface GameOptions {
     width: number;
     height: number;
     fps: number;
+    render: {
+        screen_w: number,
+        screen_h: number,
+        cell_size: number,
+        draw_distance: number,
+        pov: number,
+        rays_count: number,
+        ray_step: number,
+    }
 }
 
 export class Game {
@@ -18,6 +27,10 @@ export class Game {
         this._canvasContext = canvasCtx;
         this._render = new CanvasRender(this._canvasContext);
         this.options = options;
+    }
+
+    protected get canvasContext() {
+        return this._canvasContext;
     }
 
     start() {
@@ -53,7 +66,7 @@ export class Game {
     }
 
     onload() {
-        return new Promise(resolve => resolve({}));
+        return Promise.resolve();
     }
 
     ondraw(render: CanvasRender, dt: number) {
