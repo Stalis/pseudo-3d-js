@@ -1,6 +1,6 @@
 import { World } from "ecsy";
-import { Camera, GameMap, MapCell, Player, Position, ResourceVault, TextureBox } from "./components";
-import { RaycasterSystem } from "./systems";
+import { Camera, GameMap, MapCell, Moving, Player, Position, ResourceVault, TextureBox } from "./components";
+import { KeyboardSystem, MovingSystem, RaycasterSystem } from "./systems";
 import { Matrix, Vector2 } from "./types";
 
 import missing_256 from '../../assets/textures/missing_256.png';
@@ -55,6 +55,9 @@ export async function Startup(world: World, canvas: HTMLCanvasElement) {
         .registerComponent(GameMap)
         .registerComponent(MapCell)
         .registerComponent(TextureBox)
+        .registerComponent(Moving)
+        .registerSystem(KeyboardSystem)
+        .registerSystem(MovingSystem)
         .registerSystem(RaycasterSystem);
 
     let resorces = world.createEntity("resources")
@@ -70,8 +73,9 @@ export async function Startup(world: World, canvas: HTMLCanvasElement) {
         .addComponent(Player)
         .addComponent(Position, { 
             value: new Vector2().set(4 * cell_size, 7 * cell_size), 
-            direction: 90 
+            direction: 90,
         })
+        .addComponent(Moving)
         .addComponent(Camera, { 
             pov: 60, 
             rayDepthStep: 1,

@@ -22,9 +22,11 @@ export class Matrix<T> {
     }
 
     get(x: number, y: number) {
-        if (y < this._rows.length) {
-            if (x < this._rows[y].length) {
-                return this._rows[y][x];
+        if (x >= 0 && y >= 0) {
+            if (y < this._rows.length) {
+                if (x < this._rows[y].length) {
+                    return this._rows[y][x];
+                }
             }
         }
     }

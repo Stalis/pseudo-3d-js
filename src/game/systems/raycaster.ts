@@ -34,8 +34,6 @@ export class RaycasterSystem extends System {
         let raysRes = [];
         let left_bound = pos.direction - camera.pov / 2;
         let right_bound = pos.direction + camera.pov / 2;
-        
-        console.log(camera.ray_angle_step, camera.rayDepthStep, camera.drawDistance)
 
         for (let angle = left_bound; angle < right_bound; angle += camera.ray_angle_step) {
             let item = this.throwRay(map, pos.value, angle, camera.rayDepthStep, camera.drawDistance);
