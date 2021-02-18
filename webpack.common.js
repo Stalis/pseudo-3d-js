@@ -1,9 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { default: webpack } = require('webpack');
 
 module.exports = {
-    mode: 'development',
     entry: './src/index.js',
     module: {
         rules: [
@@ -30,13 +30,9 @@ module.exports = {
         filename: 'main.js',
         path: path.resolve(__dirname, 'dist'),
     },
-    devtool: 'inline-source-map',
-    devServer: {
-        contentBase: './dist',
-        port: 9080,
-    },
     plugins: [
         new CleanWebpackPlugin(),
+        //new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
             cache: false,
             template: './index.html',
