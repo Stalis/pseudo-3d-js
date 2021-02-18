@@ -1,0 +1,33 @@
+{
+    "$schema": "./GameSettingsSchema.json",
+    "world": {
+        "entities": [
+            {
+                "name": "player",
+                "components": [
+                    {
+                        "class": "Position",
+                        "x": 5,
+                        "y": 6
+                    },
+                    {
+                        "class": "Rotation",
+                        "value": 90
+                    },
+                    {
+                        "class": "Camera",
+                        "screen_w": 800,
+                        "screen_h": 600,
+                        "pov": 60,
+                        "drawDistance": 14
+                    }
+                ]
+            }
+        ],
+        "systems": [
+            "KeyboardSystem",
+            "MovingSystem",
+            "RenderingSystem"
+        ]
+    }
+}

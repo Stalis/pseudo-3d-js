@@ -1,9 +1,10 @@
 import { Attributes, System } from "ecsy";
 import { degToRad } from "../../engine/utils";
 import { Moving, Player, Position } from '../components';
+import { Rotation } from "../components/rotation";
 import { Vector2 } from "../types";
 
-const listening_event = 'keyup';
+const listening_event = 'keypress';
 
 const keys = {
     walk_forward: [ 'ArrowUp', 'KeyW' ],
@@ -17,7 +18,7 @@ const keys = {
 
 export class KeyboardSystem extends System {
     static queries = {
-        player: { components: [ Player, Position, Moving ] },
+        player: { components: [ Player, Position, Rotation, Moving ] },
     };
 
     private _cached: KeyboardEvent;
@@ -48,21 +49,22 @@ export class KeyboardSystem extends System {
             const player = this.queries.player.results[0];
             if (!!player) {       
                 const pos = player.getComponent(Position);
+                const rot = player.getComponent(Rotation);
                 let moving = player.getMutableComponent(Moving);
-                this.keyHandler(this._cached, pos, moving);
+                this.keyHandler(this._cached, pos, rot, moving);
             }
         }
         this._cached = null;
     }
 
-    keyHandler(event: KeyboardEvent, pos: Position, moving: Moving) {
+    keyHandler(event: KeyboardEvent, pos: Position, rot: Rotation, moving: Moving) {
         if (event.code === 'KeyQ') {
-            moving.deltaDirection -= 90;
+            moving.deltaRotation -= 90;
         } else if (event.code === 'KeyE') {
-            moving.deltaDirection += 90;
+            moving.deltaRotation += 90;
         } else {
-            let cos = Math.round(Math.cos(degToRad(pos.direction)));
-            let sin = Math.round(Math.sin(degToRad(pos.direction)));
+            let cos = Math.round(Math.cos(degToRad(rot.value)));
+            let sin = Math.round(Math.sin(degToRad(rot.value)));
 
             let pos_delta = new Vector2().set(0, 0);
             if (keys.walk_forward.includes(event.code)) {

@@ -1,9 +1,10 @@
 import { System } from "ecsy"
 import { GameMap, Moving, Position } from "../components"
+import { Rotation } from "../components/rotation";
 
 export class MovingSystem extends System {
     static queries = {
-        moving: { components: [ Position, Moving ] },
+        moving: { components: [ Position, Rotation, Moving ] },
         map: { components: [ GameMap ] }
     }
 
@@ -16,10 +17,11 @@ export class MovingSystem extends System {
         let moving = this.queries.moving.results;
         for (let entity of moving) {
             let pos = entity.getMutableComponent(Position);
+            let rot = entity.getMutableComponent(Rotation);
             let mov = entity.getMutableComponent(Moving);
 
             pos.value.add(mov.deltaPos.mul(cell_size));
-            pos.direction += mov.deltaDirection;
+            rot.value += mov.deltaRotation;
 
             mov.reset();
         }

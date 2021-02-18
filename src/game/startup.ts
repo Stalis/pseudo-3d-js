@@ -7,25 +7,26 @@ import missing_256 from '../../assets/textures/missing_256.png';
 import bricks from '../../assets/textures/bricks.png';
 import grass from '../../assets/textures/grass.png';
 import wood from '../../assets/textures/wood.png';
+import { Rotation } from "./components/rotation";
 
 const TestMap = [
-    [4, 1, 2, 3, 0, 3, 2, 1, 4],
-    [1, 0, 0, 0, 2, 0, 0, 0, 1],
-    [4, 0, 0, 0, 0, 0, 0, 0, 4],
-    [1, 0, 0, 0, 0, 0, 0, 0, 1],
-    [4, 0, 0, 0, 2, 0, 0, 0, 4],
-    [1, 0, 0, 0, 0, 0, 0, 0, 1],
-    [4, 0, 0, 0, 0, 0, 0, 0, 4],
-    [1, 0, 0, 0, 0, 0, 0, 0, 1],
-    [4, 0, 0, 3, 0, 3, 0, 0, 4],
-    [1, 0, 0, 3, 0, 3, 0, 0, 1],
-    [4, 0, 0, 3, 0, 3, 0, 0, 4],
-    [1, 0, 0, 3, 0, 3, 0, 0, 1],
-    [4, 0, 0, 3, 0, 3, 0, 0, 4],
-    [1, 0, 0, 3, 0, 3, 0, 0, 1],
-    [4, 0, 0, 0, 0, 0, 0, 0, 4],
-    [1, 0, 0, 0, 0, 0, 0, 0, 1],
-    [4, 1, 2, 2, 2, 2, 2, 1, 4],
+    [0, 4, 1, 2, 3, 0, 3, 2, 1, 4],
+    [0, 1, 0, 0, 0, 2, 0, 0, 0, 1],
+    [0, 4, 0, 0, 0, 0, 0, 0, 0, 4],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 4, 0, 0, 0, 2, 0, 0, 0, 4],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 4, 0, 0, 0, 0, 0, 0, 0, 4],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 4, 0, 0, 3, 0, 3, 0, 0, 4],
+    [0, 1, 0, 0, 3, 0, 3, 0, 0, 1],
+    [0, 4, 0, 0, 3, 0, 3, 0, 0, 4],
+    [0, 1, 0, 0, 3, 0, 3, 0, 0, 1],
+    [0, 4, 0, 0, 3, 0, 3, 0, 0, 4],
+    [0, 1, 0, 0, 3, 0, 3, 0, 0, 1],
+    [0, 4, 0, 0, 0, 0, 0, 0, 0, 4],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 4, 1, 2, 2, 2, 2, 2, 1, 4],
 ];
 
 const cell_size = 256;
@@ -50,6 +51,7 @@ export async function Startup(world: World, canvas: HTMLCanvasElement) {
     world
         .registerComponent(Player)
         .registerComponent(Position)
+        .registerComponent(Rotation)
         .registerComponent(Camera)
         .registerComponent(ResourceVault)
         .registerComponent(GameMap)
@@ -58,7 +60,12 @@ export async function Startup(world: World, canvas: HTMLCanvasElement) {
         .registerComponent(Moving)
         .registerSystem(KeyboardSystem)
         .registerSystem(MovingSystem)
-        .registerSystem(RaycasterSystem);
+        .registerSystem(RaycasterSystem, { 
+            canvas_id: 'screen',
+            screen_w: 800,
+            screen_h: 600,
+            ray_depth_step: 1,
+        });
 
     let resorces = world.createEntity("resources")
         .addComponent(ResourceVault, { textures: textures });
@@ -71,18 +78,12 @@ export async function Startup(world: World, canvas: HTMLCanvasElement) {
 
     let player = world.createEntity("player")
         .addComponent(Player)
-        .addComponent(Position, { 
-            value: new Vector2().set(4 * cell_size, 7 * cell_size), 
-            direction: 90,
-        })
+        .addComponent(Position, { value: new Vector2().set(4 * cell_size, 7 * cell_size) })
+        .addComponent(Rotation, { value: 90 })
         .addComponent(Moving)
         .addComponent(Camera, { 
             pov: 60, 
-            rayDepthStep: 1,
-            drawDistance: 16 * cell_size, 
-            canvas_ctx: canvas.getContext('2d'),
-            screen_w: canvas.width,
-            screen_h: canvas.height,
+            drawDistance: 16 * cell_size,
         });
 
     return world;

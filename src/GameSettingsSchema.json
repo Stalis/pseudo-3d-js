@@ -1,0 +1,76 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "com.github.Stalis.pseudo-3d-js",
+    "title": "Game config schema",
+    "type": "object",
+    "properties": {
+        "world": {
+            "type": "object",
+            "description": "Main world object",
+            "properties": {
+                "entities": {
+                    "type": "array",
+                    "description": "Entities, what will be created after world init",
+                    "items": {
+                        "description": "Entity instance",
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "description": "Name of entity",
+                                "type": "string"
+                            },
+                            "components": {
+                                "description": "Components list for entity",
+                                "anyOf": [
+                                    {
+                                        "type": "array",
+                                        "items": {
+                                            "description": "Init params for component instance",
+                                            "type": "object",
+                                            "properties": {
+                                                "class": {
+                                                    "description": "Class name of component",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [ "class" ]
+                                        }
+                                    },
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "systems": {
+                    "description": "Systems, what will be created after world init",
+                    "type": "array",
+                    "items": {
+                        "description": "System instance",
+                        "anyOf": [
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "class": {
+                                        "description": "Class name of system",
+                                        "type": "string"
+                                    },
+                                    "priority": {
+                                        "description": "System priority order",
+                                        "type": "integer"
+                                    }
+                                },
+                                "required": [ "class" ]
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
