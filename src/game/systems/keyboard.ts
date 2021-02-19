@@ -1,7 +1,6 @@
 import { Attributes, System } from "ecsy";
 import { degToRad } from "../../engine/utils";
-import { Moving, Player, Position } from '../components';
-import { Rotation } from "../components/rotation";
+import { Moving, Player, Position, Rotation } from '../components';
 import { Vector2 } from "../types";
 
 const listening_event = 'keypress';

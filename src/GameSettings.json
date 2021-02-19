@@ -27,7 +27,13 @@
         "systems": [
             "KeyboardSystem",
             "MovingSystem",
-            "RenderingSystem"
+            {
+                "class": "RaycasterSystem",
+                "canvas_id": "screen",
+                "screen_w": 800,
+                "screen_h": 600,
+                "ray_depth_step": 1
+            }
         ]
     }
 }

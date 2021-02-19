@@ -1,6 +1,5 @@
 import { System } from "ecsy"
-import { GameMap, Moving, Position } from "../components"
-import { Rotation } from "../components/rotation";
+import { GameMap, Moving, Position, Rotation } from "../components"
 
 export class MovingSystem extends System {
     static queries = {

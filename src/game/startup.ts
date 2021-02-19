@@ -1,5 +1,5 @@
 import { World } from "ecsy";
-import { Camera, GameMap, MapCell, Moving, Player, Position, ResourceVault, TextureBox } from "./components";
+import { Camera, GameMap, MapCell, Moving, Player, Position, ResourceVault, TextureBox, Rotation } from "./components";
 import { KeyboardSystem, MovingSystem, RaycasterSystem } from "./systems";
 import { Matrix, Vector2 } from "./types";
 
@@ -7,7 +7,6 @@ import missing_256 from '../../assets/textures/missing_256.png';
 import bricks from '../../assets/textures/bricks.png';
 import grass from '../../assets/textures/grass.png';
 import wood from '../../assets/textures/wood.png';
-import { Rotation } from "./components/rotation";
 
 const TestMap = [
     [0, 4, 1, 2, 3, 0, 3, 2, 1, 4],
@@ -61,7 +60,7 @@ export async function Startup(world: World, canvas: HTMLCanvasElement) {
         .registerSystem(KeyboardSystem)
         .registerSystem(MovingSystem)
         .registerSystem(RaycasterSystem, { 
-            canvas_id: 'screen',
+            canvas_id: canvas.id,
             screen_w: 800,
             screen_h: 600,
             ray_depth_step: 1,
@@ -78,7 +77,7 @@ export async function Startup(world: World, canvas: HTMLCanvasElement) {
 
     let player = world.createEntity("player")
         .addComponent(Player)
-        .addComponent(Position, { value: new Vector2().set(4 * cell_size, 7 * cell_size) })
+        .addComponent(Position, { value: new Vector2().set(5, 7).mul(cell_size) })
         .addComponent(Rotation, { value: 90 })
         .addComponent(Moving)
         .addComponent(Camera, { 

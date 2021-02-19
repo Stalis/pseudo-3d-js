@@ -1,8 +1,7 @@
 import { Attributes, System } from "ecsy";
-import { Player, Camera, Position, TextureBox, MapCell, GameMap, ResourceVault, CellType } from "../components";
+import { Player, Camera, Position, TextureBox, MapCell, GameMap, ResourceVault, CellType, Rotation } from "../components";
 import { Vector2 } from "../types";
 import * as utils from '../../engine/utils';
-import { Rotation } from "../components/rotation";
 
 interface RayResult {
     cell: CellType,
@@ -76,6 +75,7 @@ export class RaycasterSystem extends System {
         let raysRes = [];
         let left_bound = rot.value - camera.pov / 2;
         let right_bound = rot.value + camera.pov / 2;
+        let absDrawDistance = camera.drawDistance * map.cell_size;
 
         for (let angle = left_bound; angle < right_bound; angle += this.ray_angle_step(camera.pov)) {
             let item = this.throwRay(map, pos.value, angle, this.ray_depth_step, camera.drawDistance);

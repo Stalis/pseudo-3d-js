@@ -5,4 +5,5 @@ export * from './moving';
 export * from './player';
 export * from './position';
 export * from './resource_vault';
+export * from './rotation';
 export * from './texture_box';
