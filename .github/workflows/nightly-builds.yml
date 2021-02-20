@@ -33,9 +33,9 @@ jobs:
         run: npm run build
       
       - name: Set timezone
-        uses: actions/set-timezone-action@v1.1
+        uses: zcong1993/setup-timezone@master
         with:
-          timezoneLinux: "Europe/Moscow"
+          timezoneLinux: Europe/Moscow
       
       - name: Get current date
         id: date
