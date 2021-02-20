@@ -35,7 +35,7 @@ jobs:
       - name: Set timezone
         uses: zcong1993/setup-timezone@master
         with:
-          timezoneLinux: Europe/Moscow
+          timezone: Europe/Moscow
       
       - name: Get current date
         id: date
