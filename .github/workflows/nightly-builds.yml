@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     
     outputs:
-      status: ${{ steps.check_changes.has-new-commits }}
+      status: ${{ steps.check_changes.outputs.has-new-commits }}
     
     steps:
       - name: Check new commits
