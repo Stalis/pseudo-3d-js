@@ -11,8 +11,26 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # This workflow check if has new commits
+  check:
+    runs-on: ubuntu-latest
+    
+    outputs:
+      status: ${{ steps.check_changes.has-new-commits }}
+    
+    steps:
+      - name: Check new commits
+        id: check_changes
+        uses: adriangl/check-new-commits-action@v1.0.3
+        with:
+          # Uses default token and period of 86400 sec (24 hr)
+          branch: main
+        
   # This workflow contains a single job called "build"
   build:
+    needs: check
+    if: needs.check.outputs.status == 'true'
+    
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
