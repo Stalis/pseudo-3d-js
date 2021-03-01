@@ -1,0 +1,95 @@
+# This is a basic workflow to help you get started with Actions
+
+name: nightly-builds
+
+# Controls when the action will run. 
+on:
+  schedule:
+  - cron: "0 3 * * *"
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow check if has new commits
+  check:
+    runs-on: ubuntu-latest
+    
+    outputs:
+      status: ${{ steps.check_changes.outputs.has-new-commits }}
+    
+    steps:
+      - name: Check new commits
+        id: check_changes
+        uses: adriangl/check-new-commits-action@v1.0.3
+        with:
+          # Uses default token and period of 86400 sec (24 hr)
+          branch: main
+        
+  # This workflow contains a single job called "build"
+  build:
+    needs: check
+    if: needs.check.outputs.status == 'true'
+    
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:    
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: '14.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build dist
+        run: npm run build
+      
+      - name: Set timezone
+        uses: zcong1993/setup-timezone@master
+        with:
+          timezone: Europe/Moscow
+      
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d-%H%M')"
+        
+      - name: Test with environment variables
+        run: echo $TAG_NAME - $RELEASE_NAME
+        env:
+          TAG_NAME: nightly-tag-${{ steps.date.outputs.date }}
+          RELEASE_NAME: nightly-release-${{ steps.date.outputs.date }}
+        
+      - name: Zip dist
+        uses: TheDoctor0/zip-release@0.4.1
+        with:
+          filename: "release.zip"
+          path: "./dist"
+        
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          tag_name: nightly-tag-${{ steps.date.outputs.date }}
+          release_name: nightly-release-${{ steps.date.outputs.date }}
+          draft: false
+          prerelease: true
+      
+      - name: Upload release asset
+        uses: actions/upload-release-asset@latest
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release.zip
+          asset_name: nightly-build-${{ steps.date.outputs.date }}.zip
+          asset_content_type: application/zip
+          
+          
