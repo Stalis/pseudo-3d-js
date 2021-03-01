@@ -1,7 +1,8 @@
 import { Attributes, System } from "ecsy";
 import { degToRad } from "../../engine/utils";
 import { Moving, Player, Position, Rotation } from '../components';
-import { Vector2 } from "../types";
+import { Actor } from "../components/actor";
+import { Action, ActionKind, Directions, Vector2 } from "../types";
 
 const listening_event = 'keypress';
 
@@ -17,7 +18,7 @@ const keys = {
 
 export class KeyboardSystem extends System {
     static queries = {
-        player: { components: [ Player, Position, Rotation, Moving ] },
+        player: { components: [ Player, Actor ] },
     };
 
     private _cached: KeyboardEvent;
@@ -47,40 +48,28 @@ export class KeyboardSystem extends System {
         if (!!this._cached) {
             const player = this.queries.player.results[0];
             if (!!player) {       
-                const pos = player.getComponent(Position);
-                const rot = player.getComponent(Rotation);
-                let moving = player.getMutableComponent(Moving);
-                this.keyHandler(this._cached, pos, rot, moving);
+                let actor = player.getMutableComponent(Actor);
+                this.keyHandlerActor(this._cached, actor);
             }
         }
         this._cached = null;
     }
 
-    keyHandler(event: KeyboardEvent, pos: Position, rot: Rotation, moving: Moving) {
-        if (event.code === 'KeyQ') {
-            moving.deltaRotation -= 90;
-        } else if (event.code === 'KeyE') {
-            moving.deltaRotation += 90;
+    keyHandlerActor(event: KeyboardEvent, actor: Actor) {
+        if (keys.turn_left.includes(event.code)) {
+            actor.nextAction = Action.createNew(ActionKind.rotate, Directions.left);
+        } else if (keys.turn_right.includes(event.code)) {
+            actor.nextAction = Action.createNew(ActionKind.rotate, Directions.right);
         } else {
-            let cos = Math.round(Math.cos(degToRad(rot.value)));
-            let sin = Math.round(Math.sin(degToRad(rot.value)));
-
-            let pos_delta = new Vector2().set(0, 0);
             if (keys.walk_forward.includes(event.code)) {
-                pos_delta.x -= cos;
-                pos_delta.y -= sin;
+                actor.nextAction = Action.createNew(ActionKind.walk, Directions.forward);
             } else if (keys.walk_backward.includes(event.code)) {
-                pos_delta.x += cos;
-                pos_delta.y += sin;
+                actor.nextAction = Action.createNew(ActionKind.walk, Directions.backward);
             } else if (keys.walk_left.includes(event.code)) {
-                pos_delta.x -= sin;
-                pos_delta.y += cos;
+                actor.nextAction = Action.createNew(ActionKind.walk, Directions.left);
             } else if (keys.walk_right.includes(event.code)) {
-                pos_delta.x += sin;
-                pos_delta.y -= cos;
+                actor.nextAction = Action.createNew(ActionKind.walk, Directions.right);
             }
-
-            moving.deltaPos.set(pos_delta.x, pos_delta.y);
         }
     }
 }

@@ -3,12 +3,23 @@
         <meta charset="utf-8">
         <title><%= htmlWebpackPlugin.options.title %></title>
         <style>
-            #screen {
-                border: black solid thin;
+            #content {
+                position: relative;
+            }
+
+            #content > canvas {
+                width: 800;
+                height: 600;
+                position: absolute;
+                left: 0px;
+                top: 0px;
             }
         </style>
     </head>
     <body>
-        <canvas id="screen" width="800" height="600"></canvas>
+        <div id="content">
+            <canvas id="screen" style="z-index: 1;"></canvas>
+            <canvas id="party_ui" style="z-index: 2;"></canvas>
+        </div>
     </body>
 </html>

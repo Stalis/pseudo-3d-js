@@ -5,9 +5,20 @@ export class Vector2 implements Point {
     x: number = 0;
     y: number = 0;
 
-    set(x: number, y: number) {
-        this.x = x ?? this.x;
-        this.y = y ?? this.y;
+    constructor(x: number = 0, y: number = 0) {
+        this.x = x;
+        this.y = y;
+    }
+
+    set(x: Point | number, y?: number): this {
+        if (typeof x === 'number' && typeof y === 'number') {
+            this.x = x ?? this.x;
+            this.y = y ?? this.y;
+        } else if (typeof x === 'object' && !!x.x && !!x.y) {
+            return this.set(x.x, x.y);
+        } else {
+            throw new TypeError('First arg in Vector2::set does not implement Point');
+        }
         return this;
     }
 

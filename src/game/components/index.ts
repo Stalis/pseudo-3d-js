@@ -1,3 +1,4 @@
+export * from './actor';
 export * from './camera';
 export * from './map';
 export * from './map_cell';

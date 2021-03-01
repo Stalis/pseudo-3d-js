@@ -23,6 +23,7 @@ export class RaycasterSystem extends System {
     screen_w: number;
     screen_h: number;
     ray_depth_step: number = 1;
+    vertical_offset: number = 128;
 
     get rays_count() {
         return this.screen_w;
@@ -43,19 +44,23 @@ export class RaycasterSystem extends System {
 
         this.canvas_ctx = this.canvas.getContext('2d');
 
-        if (!!attr.ray_depth_step) {
-            this.ray_depth_step = attr.ray_depth_step
-        }
-
-        if (!attr.screen_w) {
+        if (!!attr.screen_w) {
             this.canvas.width = attr.screen_w;
         }
-        if (!attr.screen_h) {
+        if (!!attr.screen_h) {
             this.canvas.height = attr.screen_h
         }
 
         this.screen_w = this.canvas.width;
         this.screen_h = this.canvas.height;
+
+        if (!!attr.ray_depth_step) {
+            this.ray_depth_step = attr.ray_depth_step
+        }
+
+        if (!!attr.vertical_offset) {
+            this.vertical_offset = attr.vertical_offset;
+        }
     }
 
     execute(delta: number, time: number): void {
@@ -144,15 +149,15 @@ export class RaycasterSystem extends System {
 
         ctx.drawImage(texture,
             tex_x, 0, 1, cellSize,
-            sx, sy, sw, sh);
+            sx, sy - this.vertical_offset, sw, sh);
     }
 
     drawFloorAndCeiling() {
         let buf = this.canvas_ctx.fillStyle;
         this.canvas_ctx.fillStyle = 'gray';
-        this.canvas_ctx.fillRect(0, 0, this.screen_w, this.screen_h / 2);
+        this.canvas_ctx.fillRect(0, 0, this.screen_w, (this.screen_h / 2) - this.vertical_offset);
         this.canvas_ctx.fillStyle = 'darkgray';
-        this.canvas_ctx.fillRect(0, this.screen_h / 2, this.screen_w, this.screen_h / 2);
+        this.canvas_ctx.fillRect(0, this.screen_h / 2 - this.vertical_offset, this.screen_w, this.screen_h - this.vertical_offset);
         this.canvas_ctx.fillStyle = buf;
     }
 }

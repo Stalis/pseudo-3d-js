@@ -8,7 +8,6 @@ module.exports = merge(common, {
     devServer: {
         contentBase: './dist',
         port: 9080,
-        hot: true,
     },
     cache: {
         type: 'memory',

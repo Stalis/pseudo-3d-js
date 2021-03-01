@@ -24,9 +24,8 @@ window.onload = function () {
             .then(world => {
                 world.play();
 
-                let lastTime = performance.now();
+                lastTime = performance.now();
                 run(world);
-                //world.execute();
             });
 
     } else {
