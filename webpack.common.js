@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const { default: webpack } = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
     entry: './src/index.js',
@@ -9,6 +8,7 @@ module.exports = {
         rules: [
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                include: path.resolve(__dirname, 'assets'),
                 type: 'asset/resource',
                 generator: {
                     filename: 'images/[hash][ext][query]',
@@ -32,7 +32,6 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        //new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
             cache: false,
             template: './index.html',
@@ -41,7 +40,7 @@ module.exports = {
                 {
                     charset: 'utf-8',
                 },
-            ]
+            ],
         }),
     ],
 };

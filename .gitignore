@@ -3,3 +3,4 @@ dist/
 yarn.lock
 .DS_Store
 *.pxd
+.vscode
