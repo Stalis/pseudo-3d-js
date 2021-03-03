@@ -1,13 +1,14 @@
 import { Attributes, System } from "ecsy";
-import { Player } from "../components";
+import { Character, Player, PlayerCharacter } from "../components";
 import { Actor } from "../components/actor";
 import { Action, ActionKind, Directions, Vector2 } from "../types";
-import { Button, EventType, Panel, UIElement } from "../ui";
+import { Button, CharactersPanel, EventType, Panel, UIElement } from "../ui";
 
 export class PartyUISystem extends System {
     static queries = {
-        player: { components: [ Player, Actor ] }
-    }
+        player: { components: [ Player, Actor ] },
+        playerCharacters: { components: [ PlayerCharacter, Character ] },
+    };
 
     canvas: HTMLCanvasElement;
     canvas_ctx: CanvasRenderingContext2D;
@@ -15,6 +16,7 @@ export class PartyUISystem extends System {
     screen_h: number;
     panel_h: number;
     panel: UIElement;
+    charactersPanel: CharactersPanel;
     private mouseHandlers: Record<string, (ev: MouseEvent) => boolean>;
 
     init(attr: Attributes) {
@@ -62,7 +64,7 @@ export class PartyUISystem extends System {
         const panel_h = this.screen_h / 5;
 
         const button_size = panel_h / 2;
-        console.log(textures);
+        
         let panel = new Panel({
             x: 0, y: this.screen_h - panel_h,
             width: panel_w, height: panel_w,
@@ -125,10 +127,20 @@ export class PartyUISystem extends System {
             ]
         });
 
+        this.charactersPanel = panel.addChild(new CharactersPanel({
+            x: 0, y: 0, width: panel_w * 0.475, height: panel_h,
+            //card_width: panel_w / 10,
+            //spacing: panel_w / 40,
+            portraits: textures.portraits,
+        }));
+
         return panel;
     }
 
     execute(delta: number, time: number): void {
+        let characters = this.queries.playerCharacters.results.map(v => v.getComponent(Character)) as Readonly<Character>[];
+        this.charactersPanel.update(characters);
+
         this.panel.draw(this.canvas_ctx, new Vector2(0, 0));
     }
 

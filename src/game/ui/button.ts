@@ -97,8 +97,6 @@ export class Button extends UIElement {
     }
 
     drawOwn(ctx: CanvasRenderingContext2D, anchor: Point) {
-        let btn = this;
-
         const p: Point = { x: anchor.x + this.x, y: anchor.y + this.y };
         
         if (!!this.style.texture) {
@@ -112,7 +110,7 @@ export class Button extends UIElement {
             ctx.strokeStyle = this.style.stroke;
             ctx.strokeRect(p.x + strokeCorrect, p.y + strokeCorrect, this.width, this.height);
 
-            ctx.fillStyle = btn.style.fill;
+            ctx.fillStyle = this.style.fill;
             ctx.fillRect(
                 p.x + this.thickness + strokeCorrect,
                 p.y + this.thickness + strokeCorrect,

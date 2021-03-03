@@ -49,13 +49,13 @@ export class KeyboardSystem extends System {
             const player = this.queries.player.results[0];
             if (!!player) {       
                 let actor = player.getMutableComponent(Actor);
-                this.keyHandlerActor(this._cached, actor);
+                this.keyHandler(this._cached, actor);
             }
         }
         this._cached = null;
     }
 
-    keyHandlerActor(event: KeyboardEvent, actor: Actor) {
+    keyHandler(event: KeyboardEvent, actor: Actor) {
         if (keys.turn_left.includes(event.code)) {
             actor.nextAction = Action.createNew(ActionKind.rotate, Directions.left);
         } else if (keys.turn_right.includes(event.code)) {

@@ -1,5 +1,5 @@
 import { World } from "ecsy";
-import { Camera, GameMap, MapCell, Moving, Player, Position, ResourceVault, TextureBox, Rotation, Actor } from "./components";
+import { Camera, GameMap, MapCell, Moving, Player, Position, ResourceVault, TextureBox, Rotation, Actor, Character, PlayerCharacter } from "./components";
 import { KeyboardSystem, MovingSystem, RaycasterSystem, ActionSystem, PartyUISystem } from "./systems";
 import { Matrix, Vector2 } from "./types";
 import { Rect } from "../engine";
@@ -97,7 +97,7 @@ async function load_image(imagePath: string): Promise<HTMLImageElement> {
 export async function Startup(world: World, canvas: HTMLCanvasElement) {
     let textures = await load_textures([ missing_256, bricks, grass, wood ]);
 
-    let ui_textures_2 = await load_textures_atlas({
+    let ui_textures = await load_textures_atlas({
         move_buttons: {
             imagePath: move_buttons,
             sprites: {
@@ -137,6 +137,8 @@ export async function Startup(world: World, canvas: HTMLCanvasElement) {
         .registerComponent(TextureBox)
         .registerComponent(Moving)
         .registerComponent(Actor)
+        .registerComponent(PlayerCharacter)
+        .registerComponent(Character)
         .registerSystem(KeyboardSystem)
         .registerSystem(ActionSystem)
         .registerSystem(MovingSystem)
@@ -152,7 +154,7 @@ export async function Startup(world: World, canvas: HTMLCanvasElement) {
             screen_w: screen_w,
             screen_h: screen_h,
             panel_h: panel_h,
-            textures: ui_textures_2,
+            textures: ui_textures,
         });
 
     let resources = world.createEntity("resources")
@@ -166,14 +168,31 @@ export async function Startup(world: World, canvas: HTMLCanvasElement) {
 
     let player = world.createEntity("player")
         .addComponent(Player)
-        .addComponent(Position, { value: new Vector2().set(5, 7).mul(cell_size) })
+        .addComponent(Position, { value: new Vector2(5, 7).mul(cell_size) })
         .addComponent(Rotation, { value: 90 })
         .addComponent(Moving)
         .addComponent(Actor, { actionPoints: 1024 })
+        .addComponent(Character)
         .addComponent(Camera, { 
             pov: 60, 
             drawDistance: 16 * cell_size,
         });
+    
+    let char1 = world.createEntity("character1")
+        .addComponent(PlayerCharacter)
+        .addComponent(Character, { portrait: '1', hp: Math.random() * 100, mp: Math.random() * 50 });
+    
+    let char2 = world.createEntity("character2")
+        .addComponent(PlayerCharacter)
+        .addComponent(Character, { portrait: '2', hp: Math.random() * 100, mp: Math.random() * 50 });
+
+    let char3 = world.createEntity("character3")
+        .addComponent(PlayerCharacter)
+        .addComponent(Character, { portrait: '3', hp: Math.random() * 100, mp: Math.random() * 50 });
+
+    let char4 = world.createEntity("character4")
+        .addComponent(PlayerCharacter)
+        .addComponent(Character, { portrait: '4', hp: Math.random() * 100, mp: Math.random() * 50 });
 
     return world;
 }

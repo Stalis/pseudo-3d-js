@@ -1,7 +1,7 @@
 import { createType, copyCopyable, cloneClonable } from "ecsy";
 import { Point } from "../../engine";
 
-export class Vector2 implements Point {
+export class Vector2 {
     x: number = 0;
     y: number = 0;
 

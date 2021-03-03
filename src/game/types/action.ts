@@ -25,7 +25,7 @@ export class Action {
     params: any[];
 
     constructor() {
-        throw new Error("Command can be created only with Command.createNew(<type>)");
+        throw new Error("Action can be created only with Action.createNew(<type>)");
     }
 
     copy(source: Action) {
