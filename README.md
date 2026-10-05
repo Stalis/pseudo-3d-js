@@ -5,6 +5,11 @@
 
 A browser-based pseudo-3D game engine built in TypeScript. It uses raycasting for rendering and an entity-component-system architecture powered by ECSY.
 
+## Screenshots
+
+![Game screenshot 1](docs/images/screenshot-1.png)
+
+
 ## Features
 
 - Raycasting-based pseudo-3D renderer
@@ -55,12 +60,6 @@ npm run build
 | Strafe right | `D` |
 | Turn left | `Q` |
 | Turn right | `E` |
-
-## Screenshots
-
-![Game screenshot 1](docs/images/screenshot-1.png)
-
-![Game screenshot 2](docs/images/screenshot-2.png)
 
 ## Project structure
 
