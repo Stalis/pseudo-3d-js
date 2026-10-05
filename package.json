@@ -10,17 +10,16 @@
   "author": "Stalis",
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "@types/html-webpack-plugin": "^3.2.4",
-    "clean-webpack-plugin": "^3.0.0",
-    "html-webpack-plugin": "^5.2.0",
-    "ts-loader": "^8.0.17",
-    "typescript": "^4.2.2",
-    "webpack": "^5.24.2",
-    "webpack-cli": "^4.5.0",
-    "webpack-dev-server": "^3.11.2",
-    "webpack-merge": "^5.7.3"
+    "clean-webpack-plugin": "^4.0.0",
+    "html-webpack-plugin": "^5.6.8",
+    "ts-loader": "^9.6.2",
+    "typescript": "^5.9.3",
+    "webpack": "^5.111.1",
+    "webpack-cli": "^7.2.3",
+    "webpack-dev-server": "^6.0.0",
+    "webpack-merge": "^6.0.1"
   },
   "dependencies": {
-    "ecsy": "^0.4.2"
+    "ecsy": "^0.4.3"
   }
 }

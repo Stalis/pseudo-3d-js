@@ -6,7 +6,7 @@ module.exports = merge(common, {
     // devtool: 'inline-source-map',
     devtool: 'eval-cheap-module-source-map',
     devServer: {
-        contentBase: './dist',
+        static: './dist',
         port: 9080,
     },
     cache: {

@@ -56,6 +56,11 @@ npm run build
 | Turn left | `Q` |
 | Turn right | `E` |
 
+## Screenshots
+
+![Game screenshot 1](docs/images/screenshot-1.png)
+![Game screenshot 2](docs/images/screenshot-2.png)
+
 ## Project structure
 
 - `src/engine` — rendering engine and shared utilities
