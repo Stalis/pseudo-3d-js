@@ -59,6 +59,7 @@ npm run build
 ## Screenshots
 
 ![Game screenshot 1](/docs/images/screenshot-1.png)
+
 ![Game screenshot 2](/docs/images/screenshot-2.png)
 
 ## Project structure
