@@ -8,7 +8,7 @@
     "build": "webpack --config webpack.prod.js"
   },
   "author": "Stalis",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "devDependencies": {
     "@types/html-webpack-plugin": "^3.2.4",
     "clean-webpack-plugin": "^3.0.0",
