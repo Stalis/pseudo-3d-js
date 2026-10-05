@@ -3,6 +3,8 @@
 [![Node.js CI](https://github.com/Stalis/pseudo-3d-js/actions/workflows/node.js.yml/badge.svg)](https://github.com/Stalis/pseudo-3d-js/actions/workflows/node.js.yml)
 [![CodeQL](https://github.com/Stalis/pseudo-3d-js/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Stalis/pseudo-3d-js/actions/workflows/codeql-analysis.yml)
 
+[Project page](https://stalis.github.io/projects/pseudo-3d-js/) · [Live demo](https://stalis.github.io/demos/pseudo-3d-js/)
+
 A browser-based pseudo-3D game engine built in TypeScript. It uses raycasting for rendering and an entity-component-system architecture powered by ECSY.
 
 ## Screenshots
